@@ -15,13 +15,37 @@ namespace CityInfo.API
                 {
                     Id = 1,
                     Name = "New York City",
-                    Description = "The one with statue of liberty"
+                    Description = "The one with statue of liberty",
+                    PointOfInterests = new List<PointOfInterestDto>()
+                    {
+                        new PointOfInterestDto()
+                        {
+                            Id = 1,
+                            Name = "Central Park",
+                            Description = "The most visited Urban park in united states"
+                        },
+                        new PointOfInterestDto()
+                        {
+                            Id = 2,
+                            Name = "Empire State Building",
+                            Description = "A 102-storied skyscraper located in Midtown Manhattan"
+                        }
+                    }
                 },
                 new CityDto()
                 {
                     Id = 2,
-                    Name = "Antwerp",
-                    Description = "This is antwerp city"
+                    Name = "Paris",
+                    Description = "This is Paris City of France",
+                    PointOfInterests = new List<PointOfInterestDto>()
+                    {
+                        new PointOfInterestDto()
+                        {
+                            Id = 1,
+                            Name = "Eiffel Tower",
+                            Description = "One of the seven wonders of the world"
+                        }
+                    }
                 }
             };
         }
