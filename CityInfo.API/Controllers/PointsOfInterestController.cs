@@ -1,4 +1,6 @@
-﻿using CityInfo.API.Models;
+﻿using AutoMapper;
+using CityInfo.API.Models;
+using CityInfo.API.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,21 +11,27 @@ namespace CityInfo.API.Controllers
     public class PointsOfInterestController : ControllerBase
     {
         private readonly ILogger<PointsOfInterestController> _logger;
-        public PointsOfInterestController(ILogger<PointsOfInterestController> logger)
+        private readonly ICityInfoRepository _cityinforepository;
+        private readonly IMapper _mapper;
+        public PointsOfInterestController(ILogger<PointsOfInterestController> logger, ICityInfoRepository cityInfoRepository
+            ,IMapper mapper)
         {
             _logger = logger;
+            _cityinforepository = cityInfoRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<PointOfInterestDto>> GetPointOfInterest(int cityId)
+        public async Task<ActionResult<IEnumerable<PointOfInterestDto>>> GetPointOfInterest(int cityId)
         {
-            var city = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);
-            if( city is null)
+            if(!await _cityinforepository.CityExistsAsync(cityId))
             {
-                _logger.LogInformation($"City id {cityId} was not found in the context");
+                _logger.LogInformation(
+                    $"City with {cityId} does not exists");
                 return NotFound();
             }
-            return Ok(city.PointOfInterests);
+           var pointOfInterestForCity = await _cityinforepository.GetPointOfInterestForCityAsync(cityId);
+            return Ok(_mapper.Map<IEnumerable<PointOfInterestDto>>(pointOfInterestForCity));
         }
 
         [HttpGet("{id}", Name = "GetPointOfInterest")]

@@ -3,6 +3,8 @@ using CityInfo.API.Services;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -21,6 +23,7 @@ builder.Services.AddDbContext<CityInfoContext>( dbContextOptions => dbContextOpt
     builder.Configuration["ConnectionStrings:CityInfoDBConnectionString"]));
 builder.Services.AddScoped<ICityInfoRepository, CityInfoRepository>();
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
