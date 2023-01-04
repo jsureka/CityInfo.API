@@ -38,6 +38,14 @@ builder.Services.AddAuthentication("Bearer")
                 Encoding.ASCII.GetBytes(builder.Configuration["Authentication:SecretForKey"]))
         };
     });
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("MustBeFromAntWerp", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.RequireClaim("city", "Antwerp");
+    });
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
